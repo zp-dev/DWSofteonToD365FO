@@ -1,0 +1,166 @@
+openapi: 3.0.1
+info:
+  title: D365FO Inbound from Softeon
+  description: ''
+  version: '1.0'
+servers:
+  - url: https://dw-dev0402c4a30b31315d93devaos.axcloud.dynamics.com
+paths:
+  /api/services/DWSofteonServices/DWSofteonServicePOReceipt/generatePOReceipt:
+    post:
+      tags:
+        - POReceipt
+      summary: PO Receipt
+      description: Generate PO Receipt
+      operationId: po-receipt
+      requestBody:
+        description: Request payload
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/POReceiptRequest'
+            example:
+              POReceipt:
+                PurchId: P1005501
+                ReceiptNum: zp6.28.1
+                ReceiptDate: '2022-06-28'
+                ReceiptLines:
+                  - LineNum: 1
+                    ItemId: '71824'
+                    QtyReceived: 24
+                    UnitId: lb
+                    CWQtyReceived: 2
+                    BatchId: '23233'
+                    ExpDate: '2022-10-19'
+                    Warehouse: BLDG30_DC
+                    Location: '00'
+      responses:
+        '200':
+          description: PO Receipt Successfully Generated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/POReceiptOKResponse'
+              example:
+                $id: '1'
+                PurchId: P1005501
+                ReceiptNum: zp6.28.1
+                Message: Successfully generated PO receipt.
+        '500':
+          description: PO Receipt Errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                Message: "An exception occured when invoking the operation - Quantity less than minimum catch weight 20.00 and more than maximum catch weight 28.00 for item 71824 is not allowed.\r\nValidation failed"
+                ExceptionType: ErrorException
+                ActivityId: 635c61dd-8ae7-0005-ee81-5c63e78ad801
+components:
+  schemas:
+    POReceiptOKResponse:
+      type: object
+      properties:
+        $id:
+          type: string
+        PurchId:
+          type: string
+        ReceiptNum:
+          type: string
+        Message:
+          type: string
+      example:
+        $id: '1'
+        PurchId: P1005501
+        ReceiptNum: zp6.28.1
+        Message: Successfully generated PO receipt.
+    POReceiptRequest:
+      required:
+        - POReceipt
+      type: object
+      properties:
+        POReceipt:
+          required:
+            - PurchId
+            - ReceiptNum
+            - ReceiptDate
+            - ReceiptLines
+          type: object
+          properties:
+            PurchId:
+              type: string
+            ReceiptNum:
+              type: string
+            ReceiptDate:
+              type: string
+            ReceiptLines:
+              type: array
+              items:
+                required:
+                  - LineNum
+                  - ItemId
+                  - QtyReceived
+                  - UnitId
+                  - BatchId
+                  - Warehouse
+                  - Location
+                type: object
+                properties:
+                  LineNum:
+                    type: integer
+                  ItemId: 
+                    type: string
+                  QtyReceived:
+                    type: number
+                  UnitId:
+                    type: string
+                  CWQtyReceived:
+                    type: number
+                  BatchId:
+                    type: string
+                  ExpDate:
+                    type: string
+                  Warehouse:
+                    type: string
+                  Location:
+                    type: string
+      example:
+        POReceipt:
+          PurchId: P1005501
+          ReceiptNum: zp6.28.1
+          ReceiptDate: '2022-06-28'
+          ReceiptLines:
+            - LineNum: 1
+              ItemId: '71824'
+              QtyReceived: 24
+              UnitId: lb
+              CWQtyReceived: 2
+              BatchId: '23233'
+              ExpDate: '2022-10-19'
+              Warehouse: BLDG30_DC
+              Location: '00'
+    ErrorResponse:
+      type: object
+      properties:
+        Message:
+          type: string
+        ExceptionType:
+          type: string
+        ActivityId:
+          type: string
+      example:
+        Message: "An exception occured when invoking the operation - Quantity less than minimum catch weight 20.00 and more than maximum catch weight 28.00 for item 71824 is not allowed.\r\nValidation failed"
+        ExceptionType: ErrorException
+        ActivityId: 635c61dd-8ae7-0005-ee81-5c63e78ad801
+  securitySchemes:
+    apiKeyHeader:
+      type: apiKey
+      name: Ocp-Apim-Subscription-Key
+      in: header
+    apiKeyQuery:
+      type: apiKey
+      name: subscription-key
+      in: query
+security:
+  - apiKeyHeader: []
+  - apiKeyQuery: []
