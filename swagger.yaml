@@ -4,7 +4,7 @@ info:
   description: ''
   version: '1.0'
 servers:
-  - url: https://dw-dev0402c4a30b31315d93devaos.axcloud.dynamics.com
+  - url: 'https://dw-dev0402c4a30b31315d93devaos.axcloud.dynamics.com'
 paths:
   /api/services/DWSofteonServices/DWSofteonServicePOReceipt/generatePOReceipt:
     post:
@@ -48,6 +48,55 @@ paths:
                 Message: Successfully generated PO receipt.
         '500':
           description: PO Receipt Errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                Message: "An exception occured when invoking the operation - Quantity less than minimum catch weight 20.00 and more than maximum catch weight 28.00 for item 71824 is not allowed.\r\nValidation failed"
+                ExceptionType: ErrorException
+                ActivityId: 635c61dd-8ae7-0005-ee81-5c63e78ad801
+  /api/services/DWSofteonServices/DWSofteonServiceSOPackingSlip/generateSOPackingSlip:
+    post:
+      tags:
+        - SOPackingSlip
+      summary: SO Packing Slip
+      description: Generate SO Packing Slip
+      operationId: so-packing-slip
+      requestBody:
+        description: Request payload
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SOPackingSlipRequest'
+            example:
+              SOPackingSlip:
+                SalesId: SO0000391
+                ShipDate: '2022-06-28'
+                PackingSlipLines:
+                  - LineNum: 1
+                    ItemId: '71824'
+                    QtyPicked: 60
+                    UnitId: lb
+                    CWQtyPicked: 2
+                    BatchId: '23233'
+                    ExpDate: '2023-04-25'
+                    Warehouse: BLDG30_DC
+                    Location: '00'
+      responses:
+        '200':
+          description: SO Packing Slip Successfully Generated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SOPackingSlipOKResponse'
+              example:
+                $id: '1'
+                SalesId: P1005501
+                ShipDate: zp6.28.1
+                Message: Successfully generated PO receipt.
+        '500':
+          description: SO Packing Slip Errors
           content:
             application/json:
               schema:
@@ -152,6 +201,84 @@ components:
         Message: "An exception occured when invoking the operation - Quantity less than minimum catch weight 20.00 and more than maximum catch weight 28.00 for item 71824 is not allowed.\r\nValidation failed"
         ExceptionType: ErrorException
         ActivityId: 635c61dd-8ae7-0005-ee81-5c63e78ad801
+    SOPackingSlipOKResponse:
+      type: object
+      properties:
+        $id:
+          type: string
+        SalesId:
+          type: string
+        ShipDate:
+          type: string
+        Message:
+          type: string
+      example:
+        $id: '1'
+        SalesId: P1005501
+        ShipDate: zp6.28.1
+        Message: Successfully generated PO receipt.
+    SOPackingSlipRequest:
+      required:
+        - SOPackingSlip
+      type: object
+      properties:
+        SOPackingSlip:
+          required:
+            - SalesId
+            - ShipDate
+          type: object
+          properties:
+            SalesId:
+              type: string
+            ShipDate:
+              type: string
+            PackingSlipLines:
+              type: array
+              items:
+                required:
+                  - LineNum
+                  - ItemId
+                  - QtyPicked
+                  - UnitId
+                  - CWQtyPicked
+                  - BatchId
+                  - ExpDate
+                  - Warehouse
+                  - Location
+                type: object
+                properties:
+                  LineNum:
+                    type: number
+                  ItemId:
+                    type: string
+                  QtyPicked:
+                    type: number
+                  UnitId:
+                    type: string
+                  CWQtyPicked:
+                    type: number
+                  BatchId:
+                    type: string
+                  ExpDate:
+                    type: string
+                  Warehouse:
+                    type: string
+                  Location:
+                    type: string
+      example:
+        SOPackingSlip:
+          SalesId: SO0000391
+          ShipDate: '2022-06-28'
+          PackingSlipLines:
+            - LineNum: 1
+              ItemId: '71824'
+              QtyPicked: 60
+              UnitId: lb
+              CWQtyPicked: 2
+              BatchId: '23233'
+              ExpDate: '2023-04-25'
+              Warehouse: BLDG30_DC
+              Location: '00'
   securitySchemes:
     apiKeyHeader:
       type: apiKey
