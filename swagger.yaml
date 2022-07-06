@@ -27,9 +27,9 @@ paths:
                 ReceiptLines:
                   - LineNum: 1
                     ItemId: '71824'
-                    QtyReceived: 24
+                    QtyReceived: 24.0
                     UnitId: lb
-                    CWQtyReceived: 2
+                    CWQtyReceived: 2.0
                     BatchId: '23233'
                     ExpDate: '2022-10-19'
                     Warehouse: BLDG30_DC
@@ -74,11 +74,11 @@ paths:
                 SalesId: SO0000391
                 ShipDate: '2022-06-28'
                 PackingSlipLines:
-                  - LineNum: 1
+                  - LineNum: 1.0
                     ItemId: '71824'
-                    QtyPicked: 60
+                    QtyPicked: 60.0
                     UnitId: lb
-                    CWQtyPicked: 2
+                    CWQtyPicked: 2.0
                     BatchId: '23233'
                     ExpDate: '2023-04-25'
                     Warehouse: BLDG30_DC
@@ -181,9 +181,9 @@ components:
           ReceiptLines:
             - LineNum: 1
               ItemId: '71824'
-              QtyReceived: 24
+              QtyReceived: 24.0
               UnitId: lb
-              CWQtyReceived: 2
+              CWQtyReceived: 2.0
               BatchId: '23233'
               ExpDate: '2022-10-19'
               Warehouse: BLDG30_DC
@@ -270,11 +270,11 @@ components:
           SalesId: SO0000391
           ShipDate: '2022-06-28'
           PackingSlipLines:
-            - LineNum: 1
+            - LineNum: 1.0
               ItemId: '71824'
-              QtyPicked: 60
+              QtyPicked: 60.0
               UnitId: lb
-              CWQtyPicked: 2
+              CWQtyPicked: 2.0
               BatchId: '23233'
               ExpDate: '2023-04-25'
               Warehouse: BLDG30_DC
